@@ -1,48 +1,28 @@
-import { useEffect, useState } from "react"
-import ListProductsComponent from "./components/ListProductsComponent";
-import SingleProductComponent from "./components/SingleProductComponent";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TodoInputComponent from './components/TodoInputComponent';
+import TodoListComponent from './components/TodoListComponent';
+import { useEffect, useState } from 'react';
 
 
 function App() {
-
-  
-  // state - da smestimo podatke
-  const [isLoading, setIsLoading] = useState(false);
-  const [allProducts, setAllProducts] = useState([]);
-
+  // smesti sve TODOS!!!
+  const [todoItems, setTodoItems] = useState([]);
 
   useEffect(() => {
-
-    fetch('https://dummyjson.com/products')
-      .then(res => res.json())
-      .then((data) => {
-         setAllProducts(data.products)
-         setIsLoading(true);
-      });
-
-  }, []);
-
-
+    console.log(todoItems);
+  }, [todoItems])
 
   return (
-    <div>
-      <h1>Radii</h1>
+    <div className='container mx-auto flex flex-col items-center justify-center'>
+        <h1 className='text-[60px] text-green-600 font-extrabold my-[30px]'>LODO APP</h1>
 
-     <div className="flex flex-wrap items-center justify-center gap-[20px]">
-      {isLoading ? allProducts.map((product) => {
-          return <ListProductsComponent key={product.id} product={product} />
-        }) : <h2>LOADING...</h2>}
-     </div>
-
-     <SingleProductComponent />
-
-      
+        <TodoInputComponent todoItems={todoItems} setTodoItems={setTodoItems} />
+        <TodoListComponent todoItems={todoItems} setTodoItems={setTodoItems}/>
 
 
-      <ToastContainer />
+        <ToastContainer />
     </div>
   )
 }
