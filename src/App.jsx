@@ -1,42 +1,34 @@
-
-import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProductService from './services/productService';
 import axios from 'axios';
-
-
+import useFetch from './utils/useFecth';
+import CardComponent from './components/CardComponent';
+import NavbarComponent from './components/NavbarComponent';
 
 axios.defaults.baseURL = 'https://dummyjson.com';
 
-
-
-
 function App() {
+	const { data, isLoading } = useFetch('category');
 
+	return (
+		<div className='container mx-auto'>
+			<NavbarComponent />
 
-  useEffect(() => {
-
-    ProductService.getSingleProduct()
-          .then(res => console.log(res.data))
-          .catch(err => console.log(err))
-
-  }, [])
-
-
-  
-
-
-  return (
-    <div className='container mx-auto flex flex-col items-center justify-center'>
-        <h1 className='text-[60px] text-green-600 font-extrabold my-[30px]'>LODO APP</h1>
-
-       
-
-
-        <ToastContainer />
-    </div>
-  )
+			{/* our products */}
+			<div className='flex flex-wrap gap-[20px] items-center justify-center mt-[50px]'>
+				{isLoading ? (
+					data.map((product) => {
+						return (
+							<CardComponent key={product.id} product={product} />
+						);
+					})
+				) : (
+					<h2>Loading...</h2>
+				)}
+			</div>
+			<ToastContainer />
+		</div>
+	);
 }
 
-export default App
+export default App;
